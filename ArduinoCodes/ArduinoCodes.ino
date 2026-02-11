@@ -1,20 +1,22 @@
+const int buttonPin = 5;
 void setup() {
-  pinMode(13, INPUT);
-  pinMode(5, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(buttonPin, INPUT);
+  Serial.begin(9600);
+  Serial.println("Connected");
 }
 
 void loop() {
-
-  if(5 == HIGH){
+  if(digitalRead(buttonPin) == HIGH){
+    Serial.println("button was pressed");
     float startTime = millis();
     for(int i = 0; i <= 300; i++){
       float currentTime = millis();
-      //skips ahead one second
-      //while (currentTime <= pollTime){currentTime = millis();}
-      int dig = digitalRead(13);
+      float dig = analogRead(A1);
       // outputs 
       Serial.println(dig);
       Serial.println((currentTime-startTime)/1000);
+      //skips ahead one second
       delay(1000);
     }
   }
