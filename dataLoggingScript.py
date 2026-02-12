@@ -37,9 +37,9 @@ with open('VoltageValues.csv', 'w', newline='') as Vcsv:
     writer.writerow(fieldnames)
     writer.writerows(VoltageData)
 
-# creates the voltage values (not super necessary but good for debugging)
-with open('thicknessValues.csv', 'w', newline='') as Vcsv:
+# creates the thickness values
+with open('thicknessValues.csv', 'w', newline='') as Tcsv:
     fieldnames = ['thickness', 'time', 'length']
-    writer = csv.writer(Vcsv)
+    writer = csv.writer(Tcsv)
     writer.writerow(fieldnames)
     writer.writerows(thicknessData)
