@@ -1,6 +1,6 @@
 import csv
 originalData = []
-VoltageData = []
+TimeData = []
 thicknessData = []
 
 feedRate = 0.3 #m/min
@@ -10,10 +10,10 @@ with open("filename.csv", "r", newline='') as f:
     next(reader)
     for row in reader:
         data = []
-        voltage = float(3.3/1023*int(row[0]))
+        voltage = float(3.3/4096*int(row[0]))
         data.append(voltage)
         data.append(row[1])
-        VoltageData.append(data)
+        TimeData.append(data)
         data.clear
 
         #Handles the thickness calculation !!!!!!!!!!!!!!the voltage values need to be calibrated with the machine!!!!!!!!!!!!!!!!!!!!!!
