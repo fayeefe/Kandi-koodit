@@ -14,13 +14,16 @@ void ARDUINO_ISR_ATTR onTimer(){
   isrCounter = isrCounter + 1; // increments the counter
   portEXIT_CRITICAL_ISR(&timerMux);
   xSemaphoreGiveFromISR(timerSemaphore, NULL);
+  Serial.write("timer tripped ");
+  Serial.write(isrCounter);
 }
 
-// takes the measurement when the
+// takes the measurement when the semaphone is flipped
 std::deque<int> measurements;
 void measurement(){
   int dig = digitalRead(34);
   measurements.push_back(dig);
+  Serial.println("mea");
 }
 
 // calculating the average value and displaying it in serial monitor
@@ -28,12 +31,14 @@ void averaging(){
   int addition = 0;
   for(int i : measurements){
     addition = addition + i;
+    Serial.println("ave");
+
   }
   float average = addition/3;
   measurements.pop_front();
   measurements.pop_front();
   Serial.println(average);
-  Serial.println(millis());
+  //Serial.println(millis());
 }
 
 void setup() {
@@ -42,12 +47,12 @@ void setup() {
   Serial.begin(9600);
   while(!Serial);
   Serial.println("Connected");
-  Serial.write("Connectedj");
   timerSemaphore = xSemaphoreCreateBinary(); //creates the semaphore
   timer = timerBegin(1000000);
   timerAttachInterrupt(timer, &onTimer);
   timerAlarm(timer, 1000000, true, 0);
-  //timerStop(timer);
+  timerStop(timer);
+  timerWrite(timer,0);
   //timerRestart(timer);
 }
 // voltage = 3.3/4096*dig;
@@ -56,18 +61,17 @@ void setup() {
 void loop() {
   if(digitalRead(buttonPin) == HIGH && timerRead(timer) == 0){
     // turn on the timer here
-    timerStart(timer);
-    } else if(digitalRead(buttonPin) == HIGH && timerRead(timer) != 0){
+      timerStart(timer);
+    } /*else if(digitalRead(buttonPin) == HIGH && timerRead(timer) != 0){
       timerStop(timer);
-      timerRestart(timer);
-    }
+      timerWrite(timer,0);
+    }*/
   
 
   if(xSemaphoreTake(timerSemaphore, 0) == pdTRUE){
-    //isrCounter +=
       if(float i = remainder(isrCounter,2) == 0){ //checks the remainder if it's an odd number or 0 it goes into 
       measurement();
-    }else{
+    }else if (float i = remainder(isrCounter,2) != 0){
       measurement();
       averaging();
     }
