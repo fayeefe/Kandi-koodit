@@ -31,7 +31,7 @@ void averaging(){
   average = addition/3;
   measurements.clear();
   isrCounter = 1;
-  output()
+  output();
 }
 
 void ARDUINO_ISR_ATTR onTimer(){ 
