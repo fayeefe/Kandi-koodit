@@ -55,6 +55,7 @@ void setup() {
   timerWrite(timer,0);
 }
 // displaying values in serial monitor
+float measureTime;
 void output(){
   // voltage = 3.3/4096*dig;
       // float thickness1 = 12.7/(V_max-V_min)*3.3/4096*dig+v_offset) !!!!!! needs the voltage values from the actual device !!!!!!
@@ -62,9 +63,10 @@ void output(){
   float diameter = (3.97/1.5376)*(3.3/4096*average)-2.389;
   int measurementTime = millis();
   double takenTime = (measurementTime-startTime) /1000;
-  Serial.println(average); //!!!!!!!!!!!!!!! still the analogread value NOT thickness!!!!!!!!!!!!!!!!!!!
-  Serial.println(diameter);
-  Serial.println(takenTime);
+  measureTime = measureTime + takenTime;
+  //Serial.println(average); //analog value
+  Serial.print(diameter); Serial.print(",");
+  Serial.println(measureTime);
 }
 
 bool lastState = HIGH;
@@ -76,16 +78,19 @@ void loop() {
       delay(500);
     // turn on the timer here
       latchedState = !latchedState;
-      Serial.println("button");
+      Serial.println("thickness,time");
     switch(latchedState){
     case HIGH:
       measurements.clear();
       isrCounter = 0;
+      measureTime = 0;
+      startTime = 0;
       timerStart(timer);
       break;
     case LOW:
       timerStop(timer);
       timerWrite(timer,0);
+      
       break;
     }
   } 
@@ -97,7 +102,6 @@ void loop() {
       switch(isrCounter){//checks the value of the isrcounter to see where in the cycle the system is
         case 1:
           measurement();
-          
           break;
         case 2:
           measurement();         
