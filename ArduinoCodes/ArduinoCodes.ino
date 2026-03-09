@@ -20,7 +20,6 @@ void measurement(){
   measurements.push_front(dig);
 }
 
-int startTime;
 float average;
 // calculating the average value 
 void averaging(){
@@ -55,15 +54,13 @@ void setup() {
   timerWrite(timer,0);
 }
 // displaying values in serial monitor
-float measureTime;
+double measureTime;
 void output(){
   // voltage = 3.3/4096*dig;
       // float thickness1 = 12.7/(V_max-V_min)*3.3/4096*dig+v_offset) !!!!!! needs the voltage values from the actual device !!!!!!
       //int dig = analogRead(34);
   float diameter = (3.97/1.5376)*(3.3/4096*average)-2.389;
-  int measurementTime = millis();
-  double takenTime = (measurementTime-startTime) /1000;
-  measureTime = measureTime + takenTime;
+  measureTime = measureTime + 1;
   //Serial.println(average); //analog value
   Serial.print(diameter); Serial.print(",");
   Serial.println(measureTime);
@@ -84,7 +81,6 @@ void loop() {
       measurements.clear();
       isrCounter = 0;
       measureTime = 0;
-      startTime = 0;
       timerStart(timer);
       break;
     case LOW:
@@ -109,7 +105,7 @@ void loop() {
         case 3:
           measurement();
           averaging();
-          startTime = millis();
+
           measurement();
           break;
         default:
