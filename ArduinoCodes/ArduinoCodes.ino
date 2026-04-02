@@ -59,7 +59,7 @@ void output(){
   // voltage = 3.3/4096*dig;
       // float thickness1 = 12.7/(V_max-V_min)*3.3/4096*dig+v_offset) !!!!!! needs the voltage values from the actual device !!!!!!
       //int dig = analogRead(34);
-  float diameter = (3.970/1.5376)*(3.30/4096*average)-2.358; // Tune the last parameter to get the correct thickness value when the sensor is at 0
+  float diameter = (3.970/1.5376)*(3.30/4096*average)-2.344; // Tune the last parameter to get the correct thickness value when the sensor is at 0
   measureTime = measureTime + 1;
   //Serial.println(average); //analog value
   Serial.print(diameter); Serial.print(",");
