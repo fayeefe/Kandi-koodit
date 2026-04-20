@@ -1,3 +1,7 @@
+// Bachelors thesis Appendix 1
+// Made by Freija Juntunen
+// Code written for the ESP32-S thickness measurements
+
 #include <deque>
 #include <cmath>
 #include <iostream>
@@ -54,17 +58,14 @@ void setup() {
   timerStop(timer);
   timerWrite(timer,0);
 }
+
 // displaying values in serial monitor
 float measureTime;
 void output(){
-  // voltage = 3.3/4096*dig;
-      // float thickness1 = 12.7/(V_max-V_min)*3.3/4096*dig+v_offset) !!!!!! needs the voltage values from the actual device !!!!!!
-      //int dig = analogRead(34);
   float diameter = (3.97/1.5376)*(3.3/4096*average)-2.389;
   int measurementTime = millis();
   double takenTime = (measurementTime-startTime) /1000;
   measureTime = measureTime + takenTime;
-  //Serial.println(average); //analog value
   Serial.print(diameter); Serial.print(",");
   Serial.println(measureTime);
 }
@@ -95,8 +96,7 @@ void loop() {
     }
   } 
   lastState = currentState;
-  // changes the task according to the latched switch
-  
+  // changes task according to the latched switch
   
   if(xSemaphoreTake(timerSemaphore, 0) == pdTRUE){ 
       switch(isrCounter){//checks the value of the isrcounter to see where in the cycle the system is
